@@ -1,0 +1,16 @@
+Results [name=default, id=0, grade=50.0% ]
+ 
+Question Prompt given: 
+A atribuição de valor em PIL usa o operador .
+User answer: 
+	:=
+Question Prompt given: 
+Defina a estrutura de dados lista ligada.
+User answer: 
+	A lista ligada existe.
+Question Prompt given: 
+Implemente um programa que, pedindo um número inteiro do utilizador com o texto 'Number: ', escreva na consola se este é par (even) ou ímpar (odd).
+User answer: 
+	asgdfdvsf
+Grades 100.0% 
+Grades 0.0% 

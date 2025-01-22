@@ -1,0 +1,16 @@
+group Main;
+
+import "HoleQuestion.stg"
+import "OpenQuestion.stg"
+import "CodeOpenQuestion.stg"
+import "print.stg"
+
+main(outputFile, stmts) ::= <<
+public class Main {
+    private static Result result = new Result();
+
+    public static void main(String[] args) {
+        <stmts; separator="\n">
+    }
+}
+>>

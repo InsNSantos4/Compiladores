@@ -1,0 +1,7 @@
+group HoleQuestion;
+
+holeQuestion(question, ans) ::= <<
+q = new HoleQuestion("<question>", "<ans>");
+g = q.execute();
+result.updateGrade(g);
+>>

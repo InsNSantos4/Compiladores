@@ -1,0 +1,5 @@
+group print;
+
+print(str) ::= <<
+System.out.println("<<str>>");
+>>

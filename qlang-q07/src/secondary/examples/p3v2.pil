@@ -1,0 +1,12 @@
+-- Procedural Imperative Language -- loops
+
+n := integer("64");
+
+d := 3;
+loop until  d * d > n do writeln d d := d + 1 end;
+
+-- while or until can appear only once, and can be placed anywhere inside the loop:
+--    loop A while COND do B end
+
+if d > n then writeln "Number ",n," is prime" else writeln "Number ",n," is not prime" end
+

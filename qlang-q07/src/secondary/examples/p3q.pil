@@ -1,0 +1,10 @@
+n := integer(read);
+i := 1;
+name := read "Nome: ";
+writeln name;
+loop until i = n do
+   if i % 2 = 0 then
+      write i
+   end;
+   i := i + 1
+end

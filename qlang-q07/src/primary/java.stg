@@ -1,0 +1,186 @@
+// dictionaries
+
+
+typeValue ::= [
+	"integer":"int",
+	"text":"String",
+	"code":"Code",
+	"question": "QuestionInterface",
+	"fraction": "FractionValue"
+]
+
+// templates:
+
+module(name,stat) ::= <<
+import java.util.*;
+import java.io.*;
+
+public class <name> {
+   public static void main(String[] args) {
+		Result result = new Result();
+    	<stats(stat)>
+   }
+}
+>>
+
+stats(stat) ::= <<
+<if(stat)><stat; separator="\n"><endif>
+>>
+
+class_decl(class, var, value) ::= "<class> <var><if(var)> = new <class>(<value>)<endif>;"
+
+
+decl(type,var,value) ::= "<typeValue.(type)> <var><if(value)> = <value><endif>;"
+
+assign(var, value,stat) ::= <<
+<stats(stat)>
+<var> = <value>;
+>>
+
+assignNew(var, class) ::= "<var> = new <class>();"
+
+assignExecute(var, method) ::= <<
+<var> = <method>
+result.upgradeGrade(<var>);
+>>
+
+execute(class) ::= <<
+<class>.execute();
+result.updateQuestion(<class>);
+>>
+
+resultName() ::= <<
+	result.name
+>>
+
+resultID(value) ::= <<
+	result.setId(<value>);
+>>
+
+print(value,ans,stat) ::= <<
+<if(stat)>
+<stats(stat)>
+<endif>
+String prompt = "<value>";
+System.out.println(prompt);
+<if(ans)>
+this.ans = <ans>;
+<endif>
+>>
+
+export(path) ::= <<
+try {
+	FileWriter myWriter = new FileWriter(<path>);
+	myWriter.write(result.toString());
+	myWriter.close();
+} catch(IOException e) {
+	e.printStackTrace();
+}
+
+>>
+
+holeQuestion(var, stat) ::= <<
+class <var> implements QuestionInterface {
+	String ans;
+	String input;
+	String prompt;
+	public FractionValue execute() {
+		Scanner sc = new Scanner(System.in);
+		<stats(stat)>
+		this.prompt = prompt;
+		this.input = sc.nextLine();
+		if(this.ans.equals(this.input)) {
+			return new FractionValue(1,1);
+		} else {
+			return new FractionValue(0,1);
+		}
+	}
+
+	@Override
+    public String toString() {
+		return "Prompt given: \n" + this.prompt + "\nUser answer: \n\t" + this.input;
+	}
+}
+>>
+
+openQuestion(var, stat) ::= <<
+class <var> implements QuestionInterface {
+	String input;
+	String prompt;
+	public FractionValue execute() {
+		Scanner sc = new Scanner(System.in);
+		<stats(stat)>
+		this.prompt = prompt;
+		this.input = sc.nextLine();
+		return null;
+	}
+
+	@Override
+    public String toString() {
+		return "Prompt given: \n" + this.prompt + "\nUser answer: \n\t" + this.input;
+	}
+}
+>>
+
+codeOpenQuestion(var, stat) ::= <<
+class <var> implements QuestionInterface {
+	String input = "";
+	String fileName;
+	String prompt;
+	public FractionValue execute() {
+		<stats(stat)>
+		this.prompt = prompt;
+		Scanner file = null;
+		Scanner sc = null;
+		try {
+			file = new Scanner(new File(this.fileName));
+			sc = new Scanner(System.in);
+			
+			while(file.hasNextLine()) {
+				String line = sc.nextLine();
+				this.input += line;
+				if (!file.nextLine().equals(line)) {
+					return new FractionValue(0,1);
+				}
+			}
+			return new FractionValue(1,1);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			sc.close();
+			file.close();
+		}
+	}
+
+	@Override
+    public String toString() {
+		return "Prompt given: \n" + this.prompt + "\nUser answer: \n\t" + this.input;
+	}
+}
+
+>>
+
+
+text(value) ::= <<
+<value>
+>>
+
+uses(value) ::= "this.fileName = <value>;"
+
+read(scanner,var,prompt) ::= <<
+<if(prompt)>System.out.println(<prompt>);<endif>
+Scanner <scanner> = new Scanner(System.in);
+String <var> = <scanner>.nextLine();
+<scanner>.close();
+>>
+
+intConv(var, var2,stat) ::= <<
+<stats(stat)>
+int <var> = Integer.parseInt(<var2>);
+>>
+
+strConv(var, var2, stat) ::= <<
+<stats(stat)>
+String <var> = String.valueOf(<var2>);
+>>

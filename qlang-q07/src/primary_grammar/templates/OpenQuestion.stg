@@ -1,0 +1,8 @@
+group OpenQuestion;
+
+openQuestion(question) ::= <<
+q = new OpenQuestion("<question>");
+g = q.execute();
+result.updateGrade(g);
+>>
+
